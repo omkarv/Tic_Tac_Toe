@@ -35,21 +35,21 @@ var gridInput = function(input, grid, currPlayer){
     
     if(input.length !== 2) // checking length of input is correct
     {
-        console.log(errorMsg0);
+        alert(errorMsg0);
    //     console.log("here0");
         return false;
     }
     
     if((typeof(input[0]) !== 'number' )||(typeof(input[1]) !== 'number' )) // checking input type is correct need to add for input[1] too
     {
-        console.log(errorMsg0);
+        alert(errorMsg0);
    //     console.log("here1");
         return false;
     }
 
     if((gridRow > 2)||(gridRow < 0)||(gridCol > 2)||(gridCol < 0)) //checking if input value range valid
     {
-        console.log(errorMsg0);
+        alert(errorMsg0);
         //console.log(gridRow + gridCol);
    //     console.log("here2");
         return false;
@@ -67,7 +67,7 @@ var gridInput = function(input, grid, currPlayer){
     }
     else
     {
-        console.log(errorMsg1);
+        alert(errorMsg1);
      //   console.log("here4");
         return false;
     }
@@ -95,7 +95,7 @@ var isGameOver = function(grid)
         
         if("x" in rowCount){
             if(rowCount[grid[row][col]] === 3){
-                console.log("Game Over!!! Player 2 Wins!");
+                alert("Game Over!!! Player 2 Wins!");
             //    console.log(rowCount);
            //     console.log("winning row is:" + row);
                 gameOver = true;
@@ -103,7 +103,7 @@ var isGameOver = function(grid)
         }
         else if ("o" in rowCount){
             if(rowCount[grid[row][col]] === 3){
-                console.log("Game Over!!! Player 1 Wins!");
+                alert("Game Over!!! Player 1 Wins!");
             //    console.log(rowCount);
            //     console.log("winning row is:" + row);
                 gameOver = true;     
@@ -125,13 +125,13 @@ var isGameOver = function(grid)
         }
         if("x" in colCount){
             if(colCount["x"] === 3){
-                console.log("Game Over!!  Player 2 Wins!");
+                alert("Game Over!!  Player 2 Wins!");
                 gameOver = true;
             }
         }
         else if ("o" in colCount){
             if(colCount["o"] === 3){
-                console.log("Game Over!!!  Player 1 Wins!");
+                alert("Game Over!!!  Player 1 Wins!");
              //   console.log("here5")
                 gameOver = true;     
             }
@@ -144,13 +144,13 @@ var isGameOver = function(grid)
     {
         if(grid[1][1] === "o")
         {
-            console.log("Game Over!! Player 1 Wins!");
+            alert("Game Over!! Player 1 Wins!");
            // console.log("on condition diagonal");
             gameOver = true;
         }
         else if( grid[1][1] === "x")
         {
-            console.log("Game Over!! Player 2 Wins!");
+            alert("Game Over!! Player 2 Wins!");
             gameOver = true;
         }
     }
@@ -164,7 +164,7 @@ var isGameOver = function(grid)
         rowsFullCount += 1;     
     }
     if(rowsFullCount===3 && gameOver===false){            
-            console.log("Draw, You Both Lose.  GAME OVER.");
+            alert("Draw, You Both Lose.  GAME OVER.");
             gameOver = true;
             draw = true;
     }
