@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" type="text/css" href="tic_tac_toe.css">
+</head>
+
+<body>
+
+    <script src="jquery-2.0.3.min.js"></script>
+    <script>
+    $( document ).ready(function() {
+      var currToken = "X";
+
+    /*var display = function(input){
+      
+        $(this).text(input);
+    } */
+
+
+
+    //logic to check if the game over is over should be applied prior to this
+
+    //when a grid element is clicked...
+    $('.el').click(function(){ 
+    //if the grid element is empty update it with the current players token
+    if ($(this).text().length === 0)
+     $(this).text(currToken);
+    else if($(this).text() === "X")
+      $(this).text("O");
+
+    }); 
+
+
+  });
+
+
+    
+    </script>
+<h1>Tic Tac Toe</h1>
+    <table border='1'>
+      <tr >
+        <td class = 'el' id= '11'></td>
+        <td class = 'el' id= '12'></td>
+        <td class = 'el' id= '13'></td>
+      </tr>
+      <tr >
+        <td class = 'el' id= '21'></td>
+        <td class = 'el' id= '22'></td>
+        <td class = 'el' id= '23'></td>
+      </tr>
+      <tr >
+        <td class = 'el' id= '31'></td>
+        <td class = 'el' id= '32'></td>
+        <td class = 'el' id= '33'></td>
+      </tr>
+    </table>
+    <br>
+    <h2>> Player 1 enter your move</h2>
+
+</body>
+</html>
