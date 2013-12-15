@@ -20,7 +20,6 @@ $( document ).ready(function()
         var gridInput = gridConvert(playerInput);
         if (gameFinished === false) // only update grid if game not over
         {
-
             if(currPlayer===1)
             {
               currToken = "O";
@@ -42,9 +41,8 @@ $( document ).ready(function()
               gridEntry(gridInput, grid, currPlayer);
               currPlayer = 1; //swap player
             }
-
+            
             gameFinished = isGameOver(grid); // check if there are any winning sequences
-
         }
         //once game over offer retry option, block entry into grid
 
