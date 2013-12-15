@@ -80,6 +80,7 @@ return outputGrid;
 
 var isGameOver = function(grid)
 {
+    var gameOver = false;
     //checks if any rows are winning rows
     for(var row in grid)
     {
@@ -207,7 +208,7 @@ var play = function(){
             player = 1;
        //check if game over / drawn
        do{
-              userTurn = prompt(displayGrid(lastGrid) +"\n Enter your turn, Player " + player, "RowNo,ColumnNo");
+              userTurn = prompt(displayGrid(lastGrid) +"\n Enter your turn, Player  \n -----------------" + player, "RowNo,ColumnNo");
               if (userTurn !== null || userTurn !== NaN){
               rowNo = parseInt(userTurn.charAt(0));
               colNo = parseInt(userTurn.charAt(2));

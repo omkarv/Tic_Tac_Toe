@@ -6,37 +6,8 @@
 </head>
 
 <body>
-
     <script src="jquery-2.0.3.min.js"></script>
-    <script>
-    $( document ).ready(function() {
-      var currToken = "X";
-
-    /*var display = function(input){
-      
-        $(this).text(input);
-    } */
-
-
-
-    //logic to check if the game over is over should be applied prior to this
-
-    //when a grid element is clicked...
-    $('.el').click(function(){ 
-    //if the grid element is empty update it with the current players token
-    if ($(this).text().length === 0)
-     $(this).text(currToken);
-    else if($(this).text() === "X")
-      $(this).text("O");
-
-    }); 
-
-
-  });
-
-
-    
-    </script>
+    <script src="source.js"></script>
 <h1>Tic Tac Toe</h1>
     <table border='1'>
       <tr >
@@ -56,7 +27,7 @@
       </tr>
     </table>
     <br>
-    <h2>> Player 1 enter your move</h2>
+    <h2 id= 'textdisplay'> Player 1, it's your turn </h2>
 
 </body>
 </html>
