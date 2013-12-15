@@ -18,6 +18,8 @@ $( document ).ready(function()
         if(currPlayer===1)
         {
           currToken = "O";
+          //change marker color to white
+         // $(this).css('color', 'white'); change without altering hover
           // this updates the current displayed grid element selected with the player token
           $(this).text(currToken); 
           // enter converted player entry into grid object
@@ -27,6 +29,8 @@ $( document ).ready(function()
         else
         {
           currToken = "X";
+          // change marker color to green
+         // $(this).css('color', '#99FF33');
           $(this).text(currToken); 
           // enter converted player entry into grid object
           gridEntry(gridInput, grid, currPlayer);
@@ -38,8 +42,32 @@ $( document ).ready(function()
 
         //updates the displayed message depending on the current Player, if game not over
         if (gameFinished === false)
+        {
             $('#textdisplay').text("Player " + currPlayer + ", it's your turn");
+        }
+        else 
+        {
+            // highlights winning elements - to do this the gameOver function must output the winning col, row or diagonal
+            $('#retry').text("Click here to play again!");
+
+        }    
       }
+
+     });
+    
+     // resets all elements if clicked
+     $('#retry').click(function(){ 
+                // clear retry
+                $('#retry').text("");
+                //clear text display to 
+                $('#textdisplay').text("Player 1, it's your turn");
+                //clear grid
+                $('.el').text("");
+                //clear gameFinished flag and reset grid Object
+                gameFinished = true;
+                grid = [["_", "_", "_"], ["_","_","_"], ["_", "_", "_"]];
+                
+
 
      }); 
 
@@ -87,6 +115,7 @@ $( document ).ready(function()
              if(rowCount[grid[row][col]] === 3)
              {
                  $('#textdisplay').text("Game Over!!! Player 2 Wins!");
+                 console.log(row);
                  gameOver = true;
              }
          }
@@ -95,6 +124,7 @@ $( document ).ready(function()
              if(rowCount[grid[row][col]] === 3)
              {
                  $('#textdisplay').text("Game Over!!! Player 1 Wins!");
+                 console.log(row);
                  gameOver = true;     
              }
             
@@ -117,6 +147,7 @@ $( document ).ready(function()
              if(colCount["x"] === 3)
              {
                  $('#textdisplay').text("Game Over!!  Player 2 Wins!");
+                 console.log(col);
                  gameOver = true;
              }
          }
@@ -125,6 +156,7 @@ $( document ).ready(function()
              if(colCount["o"] === 3)
              {
                  $('#textdisplay').text("Game Over!!!  Player 1 Wins!");
+                 console.log(col);
                  gameOver = true;     
              }
             
@@ -157,7 +189,7 @@ $( document ).ready(function()
        }
         if(rowsFullCount===3 && gameOver===false)
         {            
-           $('#textdisplay').text("Draw, You Both Lose.  GAME OVER.");
+           $('#textdisplay').text("It's a Draw, You Both Lose.      GAME OVER.");
              gameOver = true;
              draw = true;
         }
