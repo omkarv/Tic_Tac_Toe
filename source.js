@@ -2,7 +2,10 @@ $( document ).ready(function()
     {
      //initialising an empty grid object
      var grid = [["_", "_", "_"], ["_","_","_"], ["_", "_", "_"]];
-     var currPlayer = 1; // by default start with Player 1
+     var startPlayer = 1;  
+     var currPlayer = startPlayer;  //  start with Player 1, first time around
+     var winCount = [0,0]; // Player 1 and 2 win counts
+     var gameFinished = false;
 
     //logic to check if the game over is over should be applied prior to this
 
@@ -15,29 +18,34 @@ $( document ).ready(function()
       {
         //converts the row, column of element clicked to a format compatbile with the grid Obhect (convert two digit string into integers)
         var gridInput = gridConvert(playerInput);
-        if(currPlayer===1)
+        if (gameFinished === false) // only update grid if game not over
         {
-          currToken = "O";
-          //change marker color to white
-         // $(this).css('color', 'white'); change without altering hover
-          // this updates the current displayed grid element selected with the player token
-          $(this).text(currToken); 
-          // enter converted player entry into grid object
-          gridEntry(gridInput, grid, currPlayer);
-          currPlayer = 2; //swap player
+
+            if(currPlayer===1)
+            {
+              currToken = "O";
+              //change marker color to white
+             // $(this).css('color', 'white'); change without altering hover
+              // this updates the current displayed grid element selected with the player token
+              $(this).text(currToken); 
+              // enter converted player entry into grid object
+              gridEntry(gridInput, grid, currPlayer);
+              currPlayer = 2; //swap player
+            }
+            else
+            {
+              currToken = "X";
+              // change marker color to green
+             // $(this).css('color', '#99FF33');
+              $(this).text(currToken); 
+              // enter converted player entry into grid object
+              gridEntry(gridInput, grid, currPlayer);
+              currPlayer = 1; //swap player
+            }
+
+            gameFinished = isGameOver(grid); // check if there are any winning sequences
+
         }
-        else
-        {
-          currToken = "X";
-          // change marker color to green
-         // $(this).css('color', '#99FF33');
-          $(this).text(currToken); 
-          // enter converted player entry into grid object
-          gridEntry(gridInput, grid, currPlayer);
-          currPlayer = 1; //swap player
-        }
-        
-        var gameFinished = isGameOver(grid);
         //once game over offer retry option, block entry into grid
 
         //updates the displayed message depending on the current Player, if game not over
@@ -49,25 +57,38 @@ $( document ).ready(function()
         {
             // highlights winning elements - to do this the gameOver function must output the winning col, row or diagonal
             $('#retry').text("Click here to play again!");
-
+            //update scores displayed
+            $('#score').text("Player 1: " + winCount[0] + "     Player 2: " + winCount[1] + " ");
         }    
       }
 
      });
     
      // resets all elements if clicked
-     $('#retry').click(function(){ 
+     $('#retry').click(function()
+     { 
                 // clear retry
-                $('#retry').text("");
-                //clear text display to 
-                $('#textdisplay').text("Player 1, it's your turn");
+                $('#retry').text("Click here to reset");
+                // switch startPlayer
+                if (startPlayer === 1) // if player who started previous game is player 1 switch to start with p2
+                {
+                    startPlayer = 2;
+                    currPlayer = startPlayer;
+                }
+                    
+                else
+                {
+                    startPlayer = 1;
+                    currPlayer = startPlayer;
+                }
+                    
+                //clear text display to prompt player
+                $('#textdisplay').text("Player " + currPlayer +", it's your turn");
                 //clear grid
                 $('.el').text("");
                 //clear gameFinished flag and reset grid Object
-                gameFinished = true;
+                gameFinished = false;
                 grid = [["_", "_", "_"], ["_","_","_"], ["_", "_", "_"]];
-                
-
 
      }); 
 
@@ -115,7 +136,8 @@ $( document ).ready(function()
              if(rowCount[grid[row][col]] === 3)
              {
                  $('#textdisplay').text("Game Over!!! Player 2 Wins!");
-                 console.log(row);
+                // console.log(row);
+                 winCount[1] += 1  
                  gameOver = true;
              }
          }
@@ -124,7 +146,8 @@ $( document ).ready(function()
              if(rowCount[grid[row][col]] === 3)
              {
                  $('#textdisplay').text("Game Over!!! Player 1 Wins!");
-                 console.log(row);
+                 //console.log(row);
+                 winCount[0] += 1;  
                  gameOver = true;     
              }
             
@@ -147,7 +170,8 @@ $( document ).ready(function()
              if(colCount["x"] === 3)
              {
                  $('#textdisplay').text("Game Over!!  Player 2 Wins!");
-                 console.log(col);
+                 //console.log(col);
+                 winCount[1] += 1;  
                  gameOver = true;
              }
          }
@@ -156,7 +180,8 @@ $( document ).ready(function()
              if(colCount["o"] === 3)
              {
                  $('#textdisplay').text("Game Over!!!  Player 1 Wins!");
-                 console.log(col);
+                 //console.log(col);
+                 winCount[0] += 1;  
                  gameOver = true;     
              }
             
@@ -169,11 +194,13 @@ $( document ).ready(function()
          if(grid[1][1] === "o")
          {
              $('#textdisplay').text("Game Over!! Player 1 Wins!");
+             winCount[0] += 1  
              gameOver = true;
          }
          else if( grid[1][1] === "x")
          {
              $('#textdisplay').text("Game Over!! Player 2 Wins!");
+             winCount[1] += 1  
              gameOver = true;
          }
      }
