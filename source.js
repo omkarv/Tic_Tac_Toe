@@ -41,7 +41,7 @@ $( document ).ready(function()
               gridEntry(gridInput, grid, currPlayer);
               currPlayer = 1; //swap player
             }
-            
+
             gameFinished = isGameOver(grid); // check if there are any winning sequences
         }
         //once game over offer retry option, block entry into grid
@@ -148,13 +148,14 @@ $( document ).ready(function()
                  winCount[0] += 1;  
                  gameOver = true;     
              }
-            
          }  
      }
     
      //check if there are winning columns
-     for (var columns = 0; columns < 3; columns++)
+     if (gameOver !== true)  // only run if game not over
      {
+        for (var columns = 0; columns < 3; columns++)
+        {
          var colCount = {};
          for (var rows = 0; rows <3; rows++)
          {
@@ -181,12 +182,14 @@ $( document ).ready(function()
                  //console.log(col);
                  winCount[0] += 1;  
                  gameOver = true;     
-             }
-            
+             } 
          }
-       
+        }
      }
+     
    // check if there are winning diagonals
+   if (gameOver!== true)
+   {
      if((grid[0][0]===grid[1][1]) && (grid[1][1]===grid[2][2])||(grid[0][2]===grid[1][1]) && (grid[1][1]===grid[2][0]))
      {
          if(grid[1][1] === "o")
@@ -202,8 +205,10 @@ $( document ).ready(function()
              gameOver = true;
          }
      }
-    
-     var draw = false;
+   }
+
+   if (gameOver !== true)
+   {
      var rowsFullCount = 0;
      //check if there is a draw condition
      for (var k = 0; k < grid.length; k++)
@@ -216,9 +221,10 @@ $( document ).ready(function()
         {            
            $('#textdisplay').text("It's a Draw, You Both Lose.      GAME OVER.");
              gameOver = true;
-             draw = true;
         }
      }
+     
+    }
 
      return gameOver;
     
