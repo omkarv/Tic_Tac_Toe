@@ -21,7 +21,9 @@ Methods used by COM AI
 3 strategies move strategies are used.  rule 1 has greater priority over rule 2, which in turn has greater priority over rule 3
 
 1)  If a winning move is possible it will be made
+
 2)  If an winning move is possible for the opponent, it will be blocked.  There is no prioritsation of blocking-win moves at this stage.
+
 3)  If there is a row, column or diagonal with one other COM piece "X", AND no player pieces "O", a move will be made at random into either of the other two spaces
 
 If none of the above strategies can be applied, the default COM move shall be random.  This will be the case, for example, when the grid is empty.
