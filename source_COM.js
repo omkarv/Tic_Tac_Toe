@@ -1,57 +1,56 @@
 $( document ).ready(function()
     {
      //initialising an empty grid object
-     var grid = [["_", "_", "_"], ["_","_","_"], ["_", "_", "_"]];
+     var grid = [['_', '_', '_'], // row 1
+                 ['_', '_', '_'], // row 2
+                 ['_', '_', '_']]; // row 3
      var startPlayer = 1;  
      var currPlayer = startPlayer;  //  start with Player 1, first time around
      var winCount = [0,0]; // Player 1 and 2 win counts
      var gameFinished = false;
+     var $message1 = $('#textdisplay'); // 1st message displayed to user
+     var $message2 = $('#retry'); // 2nd clickable message, in italics, displayed to user
+     var $gridElement = $('.el'); // grid element
+     var $displayedScore = $('#score'); // current score displayed to user
 
     //logic to check if the game over is over should be applied prior to this
     //when a grid element is clicked...
-     $('.el').click(function(){ 
+     $gridElement.click(function(){ 
     
       var playerInput = this.id;  //$(this).attr('id'); - this identifies the grid row, column clicked
+      var $clickedElement = $(this); // this identifies the current element selected / clicked, and jQuery functions may be used to change this element
+      
       //if the grid element is empty update it with the current players token
-      if ($(this).text().length === 0)
+      if ($clickedElement.text().length === 0)
       {
         //converts the row, column of element clicked to a format compatbile with the grid Obhect (convert two digit string into integers)
 
         var gridInput = gridConvert(playerInput);
-        if (gameFinished === false) // only update grid if game not over
+
+        if (!gameFinished) // only update grid if game not over
         {
             if(currPlayer===1)
             {
-              currToken = "O";
-              //change marker color to white
-             // $(this).css('color', 'white'); change without altering hover
               // this updates the current displayed grid element selected with the player token
-              $(this).text(currToken); 
+              $(this).text('O'); 
               // enter converted player entry into grid object
               gridEntry(gridInput, grid, currPlayer);
               currPlayer = 2; //swap player
               gameFinished = isGameOver(grid);
             }
-       
-
         }
         //once game over offer retry option, block entry into grid
 
         //updates the displayed message depending on the current Player, if game not over
-        if (gameFinished === false)
+        if (!gameFinished)
         {
-
-            $('#textdisplay').text("It's your turn, Player 1");
-
+            $message1.text("It's your turn, Player 1");
         }
         else 
         {
-            // highlights winning elements - to do this the gameOver function must output the winning col, row or diagonal
-            $('#retry').text("Click here to play again!");
+            
             //update scores displayed
-
-            $('#score').text("You: " + winCount[0] + " COM: " + winCount[1] + " ");
-
+            $displayedScore.text("You: " + winCount[0] + " COM: " + winCount[1] + " ");
         }    
       }
 
@@ -59,12 +58,10 @@ $( document ).ready(function()
 
 
     //every half a second this code runs the com code, only if the game hasn't already finished.  The comAction code function itself will check whether it is the COM turn and (i.e. currPlayer ==2)
-    if (gameFinished === false){
+    if (!gameFinished){
         setInterval(function(){
 
             currPlayer = comAction(currPlayer); // if the current player when this is called is 1, the output remains 1.  the output is also 1 when this funciton is called with currPlayer =2, but in that case the COM code is run
-
-
 
         }, 500); 
     }
@@ -72,29 +69,17 @@ $( document ).ready(function()
      // this enables the reset of all elements displayed and stored if the HTML DOM id=retry is clicked
     
      // resets all elements if clicked
-     $('#retry').click(function()
+     $message2.click(function()
      { 
                 // clear retry
-                $('#retry').text("Click here to reset");
+                $message2.text('Click here to reset');
                 // switch startPlayer
-                if (startPlayer === 1) // if player who started previous game is player 1 switch to start with p2
-                {
-                    startPlayer = 2;
-                    currPlayer = startPlayer;
-                }
-                    
-                else
-                {
-                    startPlayer = 1;
-                    currPlayer = startPlayer;
-                }
-                    
-
+                startPlayer === 1 ? startPlayer = 2 : startPlayer = 1;   // if player who started previous game is player 1 switch to start with p2
+                currPlayer = startPlayer;      
                 //clear text display to prompt player, only display message when its their turn
-                
-                $('#textdisplay').text("It's your turn, Player 1");
+                $message1.text("It's your turn, Player 1");
                 //clear grid
-                $('.el').text("");
+                $gridElement.text('');
                 //clear gameFinished flag and reset grid Object
                 gameFinished = false;
                 grid = [["_", "_", "_"], ["_","_","_"], ["_", "_", "_"]];
@@ -112,11 +97,7 @@ $( document ).ready(function()
      {
      var gridRow = input[0] - 1; 
      var gridCol = input[1] - 1;
-     // input is valid
-     if (currPlayer === 1)
-      grid[gridRow][gridCol] = "o";
-     else if (currPlayer === 2)
-       grid[gridRow][gridCol] = "x";
+     currPlayer === 1 ? grid[gridRow][gridCol] = 'o' :  grid[gridRow][gridCol] = 'x'; 
      outputGrid = grid;
 
      return outputGrid;
@@ -127,45 +108,33 @@ $( document ).ready(function()
      {
      //checks if any rows are winning rows
      var gameOver = false;
+     var playerWon;
      for(var row in grid)
      {
          var rowCount = {};  
          for(var col in grid[row])
          {
-             
              if(!(grid[row][col] in rowCount))
                  rowCount[grid[row][col]] = 1;
              else
                  rowCount[grid[row][col]] += 1;
-            
          }
         
-         if("x" in rowCount)
+         if(rowCount['x'] === 3)
          {
-             if(rowCount[grid[row][col]] === 3)
-             {
-                 $('#textdisplay').text("Game Over!!! YOU LOSE!");
-
-                // console.log(row);
-                 winCount[1] += 1  
-                 gameOver = true;
-             }
+             playerWon = 2;
+             gameOver = true;
          }
-         else if ("o" in rowCount)
-         {
-             if(rowCount[grid[row][col]] === 3)
-             {
-                 $('#textdisplay').text("Well Played!!! YOU WIN!");
 
-                 //console.log(row);
-                 winCount[0] += 1;  
-                 gameOver = true;     
-             }
-         }  
+         if(rowCount['o'] === 3)
+         {
+             playerWon = 1;
+             gameOver = true;     
+         }
      }
     
      //check if there are winning columns
-     if (gameOver !== true)  // only run if game not over
+     if (!gameOver)  // only run if game not over
      {
         for (var columns = 0; columns < 3; columns++)
         {
@@ -177,73 +146,69 @@ $( document ).ready(function()
              else
                  colCount[grid[rows][columns]] += 1;
          }
-         if("x" in colCount)
+         if(colCount["x"] === 3)
          {
-             if(colCount["x"] === 3)
-             {
 
-                 $('#textdisplay').text("Game Over!!! YOU LOSE!");
-                 //console.log(col);
-                 winCount[1] += 1;  
-                 gameOver = true;
-             }
+             playerWon = 2;
+             gameOver = true;
          }
-         else if ("o" in colCount)
+         if(colCount["o"] === 3)
          {
-             if(colCount["o"] === 3)
-             {
-                 $('#textdisplay').text("Well Played!!! YOU WIN!");
-                 //console.log(col);
-                 winCount[0] += 1;  
-                 gameOver = true;     
-             } 
-         }
+             playerWon = 1; 
+             gameOver = true;     
+         } 
         }
      }
      
    // check if there are winning diagonals
-   if (gameOver!== true)
+   if (!gameOver)
    {
      if((grid[0][0]===grid[1][1]) && (grid[1][1]===grid[2][2])||(grid[0][2]===grid[1][1]) && (grid[1][1]===grid[2][0]))
      {
          if(grid[1][1] === "o")
          {
-             $('#textdisplay').text("Well Played!!! YOU WIN!");
-
-             winCount[0] += 1  
+             playerWon = 1;
              gameOver = true;
          }
          else if( grid[1][1] === "x")
          {
-             $('#textdisplay').text("Game Over!!! YOU LOSE!");
-
-             winCount[1] += 1  
+             playerWon = 2;
              gameOver = true;
          }
      }
    }
 
-   if (gameOver !== true)
+   if (!gameOver)
    {
      var rowsFullCount = 0;
      //check if there is a draw condition
-     for (var k = 0; k < grid.length; k++)
+     for (var _row = 0; _row < grid.length; _row++)
      {
-       if(grid[k].indexOf("_") === -1)
+       if(grid[_row].indexOf("_") === -1)
        {
          rowsFullCount += 1;     
        }
-        if(rowsFullCount===3 && gameOver===false)
+     }
+     if(rowsFullCount===3)
         {            
-
-           $('#textdisplay').text("It's a DRAW!!");
+             $message1.text("It's a DRAW!!");
+             playerWon = 0; 
              gameOver = true;
         }
-     }
      
     }
+    else if(playerWon===1)
+     {  
+            $message1.text('Game Over!! Well played, You win!!!');
+            winCount[0] += 1;
+     }
+    else if(playerWon===2)
+     {  
+            $message1.text('Game Over!!YOU LOSE!!');
+            winCount[1] += 1;
+     }
 
-     return gameOver;
+    return gameOver;
     
     }
 
@@ -307,14 +272,13 @@ $( document ).ready(function()
            //this code aims to make grouping moves, when there are no winning moves or block-win moves to be made
            else if(rowCount["x"][1] === 1)
            {
-                if(rowCount["x"][0] === 0)
+                if(!rowCount["x"][0])
                      tertTarget = [parseRow, Math.floor(Math.random()*2+1)]; // randomly assign to el 1 or 2
                  else if(rowCount["x"][0] === 1)
                      tertTarget = [parseRow, 2*Math.floor(Math.random()*2)];   // randomly assign to el 0 or 2
                  else if(rowCount["x"][0] === 2)
                      tertTarget = [parseRow, Math.floor(Math.random()*2)];  // randomly assign to 0 or 1
            }
-               
          }
      }
   
@@ -366,7 +330,7 @@ $( document ).ready(function()
        //check if a grouping move can be made, where there is an x, and no opponent pieves
        else if(colCount["x"][1] === 1)
        {//relegate to tertiTarget
-            if(colCount["x"][0] === 0)
+            if(!colCount["x"][0])
                  tertTarget = [Math.floor(Math.random()*2+1), parseCol]; // randomly assign to el 1 or 2
              else if(colCount["x"][0] === 1)
                  tertTarget = [2*Math.floor(Math.random()*2), parseCol];   // randomly assign to el 0 or 2
@@ -423,17 +387,17 @@ $( document ).ready(function()
    
    // this section outputs the result from the function in the following format:  [ updated grid object, move-coordinates, in string format compatible with jQuery function to update the DOM out of the function]
   // primaryTarget has > priority than SeconTarget etc.
-      if(primeTarget.length !== 0)
+      if(primeTarget.length)
       {
          grid[primeTarget[0]][primeTarget[1]] = "x"; // updating grid Object
          return [grid, '#' + (primeTarget[0]+1).toString() + (primeTarget[1]+1).toString()]; // return grid object, and move co-ordinates to update physical display of grid
       } 
-      else if(seconTarget.length!==0)
+      else if(seconTarget.length)
       {
           grid[seconTarget[0]][seconTarget[1]] = "x";
           return [grid, '#' +  (seconTarget[0]+1).toString() + (seconTarget[1]+1).toString()];
       }
-      else if(tertTarget.length!==0)
+      else if(tertTarget.length)
       {
           grid[tertTarget[0]][tertTarget[1]] = "x";
           return [grid, '#' + (tertTarget[0]+1).toString() + (tertTarget[1]+1).toString()];
@@ -453,11 +417,10 @@ $( document ).ready(function()
             grid[randOutput[0]][randOutput[1]] = "x";
             return [grid, '#' + (randOutput[0]+1).toString() + (randOutput[1]+1).toString()];
       }
-
   }
 
   var comAction = function(player){
-       if (player === 2 && gameFinished===false)
+       if (player === 2 && !gameFinished)
        {
           currToken = "X";
           var comOutput = comMove(grid); // calls the comMove function, which returns the gridObject [0] and the display co-ordinates [1]
@@ -467,7 +430,7 @@ $( document ).ready(function()
           player = 1; //swap player
         
           gameFinished = isGameOver(grid); // run funciton to determine if the game is over
-          $('#score').text("You: " + winCount[0] + " COM: " + winCount[1] + " ");
+          $displayedScore.text("You: " + winCount[0] + " COM: " + winCount[1] + " ");
       }
       return player;
   }

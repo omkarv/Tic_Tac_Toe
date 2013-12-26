@@ -14,19 +14,19 @@ $(document).ready(function()
      var gameFinished = false; //boolean to indicate whether the game is finished, i.e. a win, draw or lose condition is present
 
      // defining jQuery functions that point to the visible html elements
-     var message1 = $('#textdisplay'); // 1st message displayed to user
-     var message2 = $('#retry'); // 2nd clickable message, in italics, displayed to user
-     var gridElement = $('.el'); // grid element
-     var displayedScore = $('#score'); // current score displayed to user
+     var $message1 = $('#textdisplay'); // 1st message displayed to user
+     var $message2 = $('#retry'); // 2nd clickable message, in italics, displayed to user
+     var $gridElement = $('.el'); // grid element
+     var $displayedScore = $('#score'); // current score displayed to user
 
      //when a grid element is clicked, execute the following code
-     gridElement.click(function() 
+     $gridElement.click(function() 
      { 
       var playerInput = this.id;  // this identifies the grid row, column clicked
-      var clickedElement = $(this); // this identifies the current element selected / clicked, and jQuery functions may be used to change this element
+      var $clickedElement = $(this); // this identifies the current element selected / clicked, and jQuery functions may be used to change this element
       
       // only if the grid element is empty update it with the current players token
-      if (!clickedElement.text().length)
+      if (!$clickedElement.text().length)
       {
         //converts the row, column of element clicked to a format compatbile with the grid array (convert two digit string into integers)
         var gridInput = gridConvert(playerInput);
@@ -35,14 +35,14 @@ $(document).ready(function()
             if(currPlayer === 1)
             {
               // this updates the current displayed grid element selected with the player 1's token, "O"
-              clickedElement.text('O'); 
+              $clickedElement.text('O'); 
               // enter converted player entry into grid object
               gridEntry(gridInput, grid, currPlayer);
               currPlayer = 2; //swap player
             }
             else
             {
-              clickedElement.text('X'); 
+              $clickedElement.text('X'); 
               gridEntry(gridInput, grid, currPlayer);
               currPlayer = 1; 
             }
@@ -52,30 +52,30 @@ $(document).ready(function()
         //updates the displayed message depending on the current Player, if game is not over
         if (!gameFinished)
         {
-            message1.text('Player ' + currPlayer + ", it's your turn");
+            $message1.text('Player ' + currPlayer + ", it's your turn");
         }
         else 
         {
-            message2.text('Click here to play again!');
+            $message2.text('Click here to play again!');
             //update scores displayed
-            displayedScore.text('Player 1: ' + winCount[0] + '     Player 2: ' + winCount[1] + ' ');
+            $displayedScore.text('Player 1: ' + winCount[0] + '     Player 2: ' + winCount[1] + ' ');
         }    
       }
 
      });
     
      // resets all elements if clicked
-     message2.click(function()
+     $message2.click(function()
      { 
                 // clear retry
-                message2.text('Click here to reset');
+                $message2.text('Click here to reset');
                 // switch startPlayer
                 startPlayer === 1 ? startPlayer = 2 : startPlayer = 1;   // if player who started previous game is player 1 switch to start with p2
                 currPlayer = startPlayer;        
                 //clear text display to prompt player
-                message1.text('Player ' + currPlayer +", it's your turn");
+                $message1.text('Player ' + currPlayer +", it's your turn");
                 //clear all grid elements
-                gridElement.text('');
+                $gridElement.text('');
                 //clear gameFinished flag and reset grid array
                 gameFinished = false;
                 grid = [['_', '_', '_'],
@@ -189,14 +189,14 @@ $(document).ready(function()
           }
          if(rowsFullCount === 3)
          {            
-            message1.text("It's a Draw, You Both Lose.  GAME OVER.");
+            $message1.text("It's a Draw, You Both Lose.  GAME OVER.");
             playerWon = 0; 
             gameOver = true;
          }
      }
      else if(playerWon)
      {  
-            message1.text('Game Over!! Player ' + playerWon + ' Wins!');
+            $message1.text('Game Over!! Player ' + playerWon + ' Wins!');
             winCount[playerWon-1] += 1;
      }
 
