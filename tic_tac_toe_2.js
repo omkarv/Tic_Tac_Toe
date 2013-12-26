@@ -1,9 +1,13 @@
-var startGrid = [["_", "_", "_"], ["_","_","_"], ["_", "_", "_"]];
+var startGrid = [["_", "_", "_"],
+                 ["_", "_", "_"],
+                 ["_", "_", "_"]];
 //initial grid values, stored as an array of arrays, each array being a row.  E.g. grid[1][1] corresponds to the middle element of the tic-tac-toe grid
 
 
 // this function will output a string format of the grid when in the array format above.  It assumes a correct input, so the input will have to check if the entry is legal
-var displayGrid = function(grid){
+var displayGrid = function(grid)
+{
+    //"use strict";
     var output = "";
     for(var row in grid)
     {
@@ -24,7 +28,8 @@ var displayGrid = function(grid){
 
 
 
-var gridInput = function(input, grid, currPlayer){
+var gridInput = function(input, grid, currPlayer)
+{
     // this needs to occur to convert the player row column entry to the corresponding stored value in the grid array
     var gridRow = input[0] - 1; 
     var gridCol = input[1] - 1;
