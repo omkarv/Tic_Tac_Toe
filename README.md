@@ -1,4 +1,4 @@
-Readme - Updated 17/12/2013
+Readme - Updated 12/1/2014
 ----------------------------
 
 This folder contains various tic-tac-toe related projects.  
@@ -13,8 +13,9 @@ comMove.js is a seperate file containing the comMove function, which is present 
 B) source.js, tic_tac_toe.html & tic_tac_toe.css form (a very early dev stage of)  a tic tac toe game, using javascript.
 They use the jQuery v2.0.3 min.js Javascript library 
 
-C) tic_tac_toe.js & tic_tac_toe2.js (the improved version!) are standalone JS alert pop-up based 2-player turn based games, that can be placed within a html script to be played, otherwise use JSfiddle.
+C) tic_tac_toe.js & tic_tac_toe2.js (the improved version!) are standalone JS alert pop-up based 2-player turn based games, that can be placed within a html script to be played, otherwise use JSfiddle
 
+D) meteor:  this folder contains the files for the project deployed on tic-tac-toe.meteor.com
 
 Methods used by COM AI
 ----------------------------------
