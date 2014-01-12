@@ -1,6 +1,5 @@
-  // client code
+// client code
 //"use strict";
-//var grid = new Meteor.Collection("Grid");
 
 $(document).ready(function()
     {
@@ -8,10 +7,6 @@ $(document).ready(function()
      var initGrid = [['_', '_', '_'], // row 1
                  ['_', '_', '_'], // row 2
                  ['_', '_', '_']]; // row 3
-      //var grid = initGrid;
-     //var rowCountGlobal = {"1": {"o": 0, "x": 0}, "2": {"o": 0, "x": 0}, "3": {"o": 0, "x": 0}};
-     //var colCountGlobal = {"1": {"o": 0, "x": 0}, "2": {"o": 0, "x": 0}, "3": {"o": 0, "x": 0}};
-      //boolean to indicate whether the game is finished, i.e. a win, draw or lose condition is present
 
      // defining jQuery functions that point to the visible html elements
      var message1 = $('#textdisplay'); // 1st message displayed to user
@@ -20,30 +15,27 @@ $(document).ready(function()
      var displayedScore = $('#score'); // current score displayed to user
      
      var startPlayer = 1;           //  Player taking first turn  
-     //var grid = GlobalGrid.findOne({type: "grid"}).value;
-     //console.log(grid);
      var currPlayer = 1;//GlobalGrid.findOne({type: "grid"}).currPlayer;  //  start with Player 1, first time around
-     var winCount = [0,0];//GlobalGrid.findOne({type: "grid"}).winCount; // Player 1 and 2 win counts
+     var winCount = [0,0]; // Player 1 and 2 win counts
      var gameFinished = false;
      var reset = false;
      
-     //when a grid element is clicked, execute the following code
-     //console.log("running");
+
+     //The following function checks the current value of the grid variables on the server (player, grid contents) and then updates the display accorsingly
+     //if the reset flag is active this function shall also reset the grid on the server and on the screen
       var updateDisplay = function()
      {  
-        gridId = GlobalGrid.findOne({type:"grid"})._id;
-        grid = GlobalGrid.findOne({type: "grid"}).value;
+        gridId = GlobalGrid.findOne({type:"grid"})._id; // global variable
+        grid = GlobalGrid.findOne({type: "grid"}).value; // global variable
         currPlayer = GlobalGrid.findOne({type: "grid"}).currentPlayer;
         if(!gameFinished)
             message1.text('Player ' + currPlayer +", it's your turn");
-       // console.log(grid);
         gameFinished = isGameOver(grid);
         for(var row = 0; row < 3; row++)
         {
             for(var col = 0; col < 3; col++)
             {
                 var reference = '#' + (row+1) + (col+1);
-                //console.log(reference);
                 if (grid[row][col] !== '_') {
                     $(reference).text(grid[row][col].toUpperCase());
                 }
@@ -56,8 +48,6 @@ $(document).ready(function()
                 else if (grid[row][col] == '_') {
                     $(reference).text('');
                 }
-
-                    //console.log('element updated '+ grid[row][col].toUpperCase()); } //console.log(reference)
             }
         }
          if (!gameFinished)
@@ -72,8 +62,9 @@ $(document).ready(function()
         }    
      }
 
-    setInterval(updateDisplay, 200);
+     setInterval(updateDisplay, 200); // this updates the display every 200ms
 
+     //when a grid element is clicked, execute the following code
      gridElement.click(function() 
      { 
       var playerInput = this.id;  // this identifies the grid row, column clicked
@@ -141,8 +132,6 @@ $(document).ready(function()
    //     currPlayer === 1 ? colCountGlobal[input[1].toString]['o'] += 1 :  rowCountGlobal[input[1].toString]['x'] += 1 ;
         return grid;
      }
-
-    
 
      //function to check whether either player has won, or the game is drawn, returns boolean gameOver. Also updates the screen with who has won.  Also returns the player that has won
      var isGameOver = function(grid) // TO DO tidy this function
