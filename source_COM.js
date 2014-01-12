@@ -80,7 +80,6 @@ $( document ).ready(function()
                         ['_', '_', '_']];
 
      }); 
-
     //function to convert two digit string to grid entry
      var gridConvert = function(twodigitstring) 
      {
@@ -167,7 +166,6 @@ $( document ).ready(function()
          }
      }
     }
-
     if (!gameOver)
     {
      var rowsFullCount = 0;
